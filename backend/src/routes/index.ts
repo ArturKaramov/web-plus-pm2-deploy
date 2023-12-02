@@ -1,13 +1,9 @@
-import {
-  Router, Request, Response, NextFunction,
-} from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import userRouter from './users';
 import cardRouter from './cards';
 import auth from '../middlewares/auth';
 import NotFoundError from '../errors/not-found-error';
-import {
-  createUser, login,
-} from '../controllers/users';
+import { createUser, login } from '../controllers/users';
 import { validateUserBody, validateAuthentication } from '../middlewares/validatons';
 
 const router = Router();
