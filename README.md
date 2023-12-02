@@ -1,3 +1,5 @@
 # Деплой приложения на сервер с использованием pm2
 
-Стартеркит проекта по автоматизации деплоя фронтенда и бэкенда при помощи pm2 (pm2 deploy)
+IP адрес 84.201.157.153
+Frontend [...](https://knowyourmesto.nomoredomainsmonster.ru/)https://knowyourmesto.nomoredomainsmonster.ru/
+Backend [https://...](https://api.knowyourmesto.nomoredomainsmonster.ru/)https://api.knowyourmesto.nomoredomainsmonster.ru/
