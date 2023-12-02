@@ -1,10 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import {
-  Request,
-  Response,
-  NextFunction,
-} from 'express';
+import { Request, Response, NextFunction } from 'express';
 import User from '../models/user';
 import { JWT_SECRET } from '../config';
 import BadRequestError from '../errors/bad-request-error';
@@ -18,7 +14,6 @@ const login = (req: Request, res: Response, next: NextFunction) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET);
       return res
         .cookie('jwt', token, {
-
           maxAge: 3600000,
           httpOnly: true,
           sameSite: true,
@@ -29,14 +24,19 @@ const login = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const createUser = (req: Request, res: Response, next: NextFunction) => {
-  const {
-    name, about, avatar, password, email,
-  } = req.body;
+  const { name, about, avatar, password, email } = req.body;
 
-  bcrypt.hash(password, 10)
-    .then((hash) => User.create({
-      name, about, avatar, email, password: hash,
-    }))
+  bcrypt
+    .hash(password, 10)
+    .then((hash) =>
+      User.create({
+        name,
+        about,
+        avatar,
+        email,
+        password: hash,
+      }),
+    )
     .then((data) => res.status(201).send(data))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -65,30 +65,20 @@ const getCurrentUser = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const updateUserData = (req: Request, res: Response, next: NextFunction) => {
-  const { user: { _id }, body } = req;
+  const {
+    user: { _id },
+    body,
+  } = req;
   User.findByIdAndUpdate(_id, body, { new: true, runValidators: true })
     .orFail(() => new NotFoundError('Пользователь по заданному id отсутствует в базе'))
     .then((user) => res.send(user))
     .catch(next);
 };
 
-const updateUserInfo = (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => updateUserData(req, res, next);
+const updateUserInfo = (req: Request, res: Response, next: NextFunction) =>
+  updateUserData(req, res, next);
 
-const updateUserAvatar = (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => updateUserData(req, res, next);
+const updateUserAvatar = (req: Request, res: Response, next: NextFunction) =>
+  updateUserData(req, res, next);
 
-export {
-  login,
-  updateUserInfo,
-  updateUserAvatar,
-  createUser,
-  getUser,
-  getCurrentUser,
-};
+export { login, updateUserInfo, updateUserAvatar, createUser, getUser, getCurrentUser };
